@@ -8,8 +8,9 @@ namespace Lesson13
 {
     public class Fruit
     {
-        private string name;
-        private string color;
+        private string name = string.Empty;
+        private string color = string.Empty;
+
 
         public string Name
         {
@@ -33,9 +34,9 @@ namespace Lesson13
         public virtual void Input()
         {
             Console.Write("Enter fruit name: ");
-            Name = Console.ReadLine();
+            Name = Console.ReadLine() ?? string.Empty;
             Console.Write("Enter fruit color: ");
-            Color = Console.ReadLine();
+            Color = Console.ReadLine() ?? string.Empty;
         }
 
         public virtual void Print()
@@ -44,8 +45,8 @@ namespace Lesson13
         }
         public virtual void Input(StreamReader reader)
         {
-            Name = reader.ReadLine();
-            Color = reader.ReadLine();
+            Name = reader.ReadLine() ?? string.Empty;
+            Color = reader.ReadLine() ?? string.Empty;
         }
 
         public virtual void Print(StreamWriter writer)

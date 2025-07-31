@@ -14,45 +14,44 @@ Console.WriteLine("Hello, World!");
                 new Citrus("Orange", "orange", 0.059),
                 new Fruit("Grape", "purple"),
                 new Citrus("Grapefruit", "pink", 0.031),
-                new Fruit("Pear", "green")
+                new Fruit("Pear", "green"),
+                new Fruit("Mango", "orange"),
+                new Fruit("Blueberry", "blue"),
+                new Fruit("Kiwi", "brown"),
+                new Citrus("Mandarin", "orange", 0.040),
+                new Citrus("Lime", "green", 0.029),
+                new Fruit("Plum", "violet"),
+                new Citrus("Pomelo", "green", 0.045),
+                new Fruit("Pineapple", "yellow"),
+                new Fruit("Cherry", "red")
             };
 
-        // Print 'yellow' fruits
-        Console.WriteLine("\nYellow fruits:");
+        
+        Console.WriteLine("Yellow fruits:");
         foreach (var f in fruits.Where(x => x.Color == "yellow"))
             f.Print();
 
-        // Sort by name, output to file
+        Console.WriteLine("Green fruits:");
+        foreach (var f in fruits.Where(x => x.Color == "green"))
+            f.Print();
+
         var sorted = fruits.OrderBy(x => x.Name).ToList();
-        using (var writer = new StreamWriter("fruits.txt"))
-        {
-            foreach (var f in sorted)
-                f.Print(writer);
-        }
-        Console.WriteLine("\nFruits sorted by name written to fruits.txt.");
-
-        // Xml serialize/deserialize
-        var xmlSer = new XmlSerializer(typeof(List<Fruit>), new Type[] { typeof(Citrus) });
-        using (var fs = new FileStream("fruits.xml", FileMode.Create))
-            xmlSer.Serialize(fs, fruits);
-        Console.WriteLine("Serialized to fruits.xml.");
-
-        using (var fs = new FileStream("fruits.xml", FileMode.Open))
-            fruits = (List<Fruit>)xmlSer.Deserialize(fs);
-
-        // Json serialize/deserialize
-        string json = JsonSerializer.Serialize(fruits, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText("fruits.json", json);
-        Console.WriteLine("Serialized to fruits.json.");
-
-        fruits = JsonSerializer.Deserialize<List<Fruit>>(File.ReadAllText("fruits.json"),
-            new JsonSerializerOptions
+            using (var writer = new StreamWriter("fruits.txt"))
             {
-                Converters = { new CitrusJsonConverter() }
-            });
+                foreach (var f in sorted)
+                    f.Print(writer);
+            }
+            Console.WriteLine("Fruits sorted by name written to fruits.txt.");
 
-    }
-    catch (Exception ex)
+            FruitSerializer.SerializeToJson("fruits.json", fruits);
+            var loadedFruits = FruitSerializer.DeserializeFromJson("fruits.json");
+
+            FruitSerializer.SerializeToXml("fruits.xml", fruits);
+            var loadedFruitsXml = FruitSerializer.DeserializeFromXml("fruits.xml");
+
+
+}
+catch (Exception ex)
     {
         Console.WriteLine($"Error: {ex.Message}");
     }

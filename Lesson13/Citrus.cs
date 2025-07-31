@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 
 namespace Lesson13
 {
@@ -49,6 +45,6 @@ namespace Lesson13
         }
 
         public override string ToString()
-            => $"Citrus: {Name}, Color: {Color}, Vitamin C: {VitaminC}g";
+            => $"Citrus: {Name}, Color: {Color}, Vitamin C: {VitaminC.ToString("0.###", CultureInfo.InvariantCulture)}g";
     }
 }
